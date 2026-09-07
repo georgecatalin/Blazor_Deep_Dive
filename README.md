@@ -5,7 +5,7 @@ Personal hands-on practice repository accompanying the Udemy course [Blazor Deep
 This repository contains step-by-step implementations, exercises, architectural experiments, and practical course projects spanning modern Blazor full-stack development.
 
 
-## 🎯 Repository Objectives
+##  Repository Objectives
 
 - Master modern Blazor render modes and hosting patterns (.NET 8+ / .NET 9).
 - Implement component architecture with clean separation of concerns.
@@ -13,7 +13,7 @@ This repository contains step-by-step implementations, exercises, architectural 
 - Build, style, test, and secure interactive Blazor client and server components.
 
 
-## 🛠 Tech Stack & Tools
+##  Tech Stack & Tools
 
 - **Language:** C#
 - **Framework:** ASP.NET Core Blazor (.NET 8 / .NET 9)
