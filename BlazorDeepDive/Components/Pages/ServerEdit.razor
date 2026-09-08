@@ -5,10 +5,14 @@
 
 @if (server !=null)
 {
-    <EditForm Model="server" FormName="myForm" OnSubmit="SubmitMe">
+    <EditForm Model="server" FormName="myForm" OnValidSubmit="SubmitMe">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
         <InputText @bind-Value="server.Name"></InputText>
+        <ValidationMessage For="()=>server.Name"></ValidationMessage>
         <InputNumber @bind-Value="server.Id" hidden=""></InputNumber>
         <InputText @bind-Value="server.City"></InputText>
+        <ValidationMessage For="() =>server.City"></ValidationMessage>
         <InputCheckbox @bind-Value="server.IsOnline"></InputCheckbox>
         <button class="btn btn-primary" type="submit">Submit</button>
         <a href="/servers/loop" class="btn btn-primary">Back</a>

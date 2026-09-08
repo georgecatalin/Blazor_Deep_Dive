@@ -1,4 +1,6 @@
-﻿namespace BlazorDeepDive.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BlazorDeepDive.Models
 {
     public class Server
     {
@@ -12,7 +14,9 @@
 
         public int Id { get; set; }
         public bool IsOnline { get; set; }
+        [Required]
         public string? Name { get; set; }
+        [Required]
         public string? City { get; set; }
     }
 }
