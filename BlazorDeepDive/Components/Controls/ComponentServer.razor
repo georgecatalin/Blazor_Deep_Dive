@@ -2,10 +2,24 @@
 
 <p>
     Server-side Blazor component that provides a server-side rendering environment for Blazor components.
+    @serverInfo published at @DateTime.Now
 </p>
 
-
+<div class="alert alert-info">
+    <p>
+        Server Details: <br />
+Id =@serverDetails.Id,<br/>
+Name = @serverDetails.Name, <br/>
+City = @serverDetails.City <br/>
+    </p>    
+</div>
 
 @code {
-
+    private string serverInfo = "Server-side Blazor component is running.";
+    private ServerDetails serverDetails = new ServerDetails
+        {
+            Id = 2324,
+            Name = "Blazor Server",
+            City = "Galati"
+        };
 }
