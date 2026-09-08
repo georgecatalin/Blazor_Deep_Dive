@@ -5,11 +5,13 @@
 
 @if (server !=null)
 {
-    <EditForm Model="server">
+    <EditForm Model="server" FormName="myForm" OnSubmit="SubmitMe">
         <InputText @bind-Value="server.Name"></InputText>
-        <InputNumber @bind-Value="server.Id"></InputNumber>
+        <InputNumber @bind-Value="server.Id" hidden=""></InputNumber>
         <InputText @bind-Value="server.City"></InputText>
         <InputCheckbox @bind-Value="server.IsOnline"></InputCheckbox>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <a href="/servers/loop" class="btn btn-primary">Back</a>
     </EditForm>
 }
 else
@@ -18,13 +20,15 @@ else
         @errorMessage
     </p>
 }
-<a href="/servers/loop" class="btn btn-primary">Back</a>
+
 
 @code {
     [Parameter]
     public int Id { get; set; }
 
-    private Server? server;
+    [SupplyParameterFromForm(FormName ="myForm")]
+    private Server? server { get; set; }
+
     private string? errorMessage;
 
     protected override void OnParametersSet()
@@ -36,7 +40,18 @@ else
             return;
         }
 
-        server = ServerRepository.GetServerById(Id);
+        server ??= ServerRepository.GetServerById(Id);
         errorMessage = server is null ? $"Server with id {Id} was not found." : null;
+    }
+
+
+
+    private void SubmitMe()
+    {
+        if(server !=null)
+        {
+            ServerRepository.UpdateServer(server.Id, server);
+        }
+       
     }
 }
