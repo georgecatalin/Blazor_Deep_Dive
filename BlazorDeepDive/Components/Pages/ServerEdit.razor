@@ -1,7 +1,9 @@
-﻿@page "/servers/edit"
+﻿@page "/servers/edit/{id:int}"
 
-<h3>ServerEdit</h3>
+<h3>Server Edit</h3>
+@Id
 
 @code {
-
+    [Parameter]
+    public int? Id { get; set; }
 }
