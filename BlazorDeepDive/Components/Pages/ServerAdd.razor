@@ -1,0 +1,32 @@
+﻿@page "/servers/add"
+@inject NavigationManager navigationManager
+
+<h3>Server Add</h3>
+
+<EditForm Model="server" FormName="myForm" OnValidSubmit="SubmitMe">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+    <InputText @bind-Value="server.Name"></InputText>
+    <ValidationMessage For="() => server.Name"></ValidationMessage>
+    <InputNumber @bind-Value="server.Id" hidden=""></InputNumber>
+    <InputText @bind-Value="server.City"></InputText>
+    <ValidationMessage For="() => server.City"></ValidationMessage>
+    <InputCheckbox @bind-Value="server.IsOnline"></InputCheckbox>
+    <button class="btn btn-primary" type="submit">Submit</button>
+    <a href="/servers/loop" class="btn btn-primary">Back</a>
+</EditForm>
+
+@code {
+
+    [SupplyParameterFromForm]
+    private Server? server { get; set; } = new Server() { IsOnline = false }; // at class scope Blazor only allows member declarations (fields, properties, methods, etc.), not free statements.
+
+    private void SubmitMe()
+    {
+        if(server !=null)
+        {
+            ServerRepository.AddServer(server);
+            navigationManager.NavigateTo("/server");
+        }
+    }
+}
