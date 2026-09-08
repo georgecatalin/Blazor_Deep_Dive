@@ -3,7 +3,43 @@
 <h3>Server Edit</h3>
 @Id
 
+@if (server !=null)
+{
+    <p>
+        @server.Name
+    </p>
+    <p>
+        @server.City
+    </p>
+    <p>
+        @server.IsOnline
+    </p>
+}
+else
+{
+    <p class="text-danger">
+        @errorMessage
+    </p>
+}
+<a href="/servers/loop" class="btn btn-primary">Back</a>
+
 @code {
     [Parameter]
-    public int? Id { get; set; }
+    public int Id { get; set; }
+
+    private Server? server;
+    private string? errorMessage;
+
+    protected override void OnParametersSet()
+    {
+        if (Id <= 0)
+        {
+            server = null;
+            errorMessage = "Invalid server id.";
+            return;
+        }
+
+        server = ServerRepository.GetServerById(Id);
+        errorMessage = server is null ? $"Server with id {Id} was not found." : null;
+    }
 }
