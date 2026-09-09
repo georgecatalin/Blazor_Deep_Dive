@@ -1,27 +1,48 @@
 ﻿<h3>ComponentServer</h3>
 
-<p style="@($"color:{(serverDetails.IsOnline ? "green" : "red")}")">
+<p style="@($"color:{(server.IsOnline ? "green" : "red")}")">
     Server-side Blazor component that provides a server-side rendering environment for Blazor components.
     @serverInfo published at @DateTime.Now
+    @server.Name -> @server.City
    <br/>
-    Server is @(serverDetails.IsOnline  ? "online" : "offline")
+    Server is @(server.IsOnline  ? "online" : "offline")
 </p>
 
-<div class="alert alert-info" data-name="@(serverDetails.IsOnline ? "online" : "offline")" style="color:@(serverDetails.IsOnline ? "green" : "red")">
-    <p>
-        Server Details: <br />
-Id =@serverDetails.Id,<br/>
-Name = @serverDetails.Name, <br/>
-City = @serverDetails.City <br/>
-    </p>    
-</div>
+
+@if(server !=null)
+{
+    <EditForm Enhance="true" Model="server" OnValidSubmit="GetData" FormName="myForm">
+        <InputNumber @bind-Value="server.Id" hidden></InputNumber>
+        <InputText @bind-Value="server.Name" hidden></InputText>
+        <InputText @bind-Value="server.City" hidden></InputText>
+        <InputCheckbox @bind-Value="server.IsOnline" hidden></InputCheckbox>
+        <button type="submit" class="btn btn-primary">Turn On/Off</button>
+    </EditForm>
+}
+
+
+
 
 @code {
     private string serverInfo = "Server-side Blazor component is running.";
-    private Server serverDetails = new Server
+
+    [SupplyParameterFromForm]
+    public Server? server { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        server ??= new Server()
+            {
+                Name = "Server1",
+                City = "Toronto"
+            };
+    }
+
+    private void GetData()
+    {
+        if(server!=null)
         {
-            Id = 2324,
-            Name = "Blazor Server",
-            City = "Galati"
-        };
+            server.IsOnline = !server.IsOnline;
+        }
+    }
 }
