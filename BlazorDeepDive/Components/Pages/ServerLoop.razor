@@ -1,4 +1,5 @@
 ﻿@page "/servers/loop"
+@inject NavigationManager navigationManager
 
 <h3>ServerLoop</h3>
 <p>
@@ -12,7 +13,10 @@
             </span>
             &nbsp;
             <a href="/servers/edit/@server.Id" class="btn btn-link">Edit</a>
-        </li>
+            <EditForm Model="server" FormName=@($"form-delete-{server.Id}") OnValidSubmit="() => DeleteServer(server.Id)">
+                <button type="submit" class="btn btn-warning">Delete</button>
+            </EditForm>
+            </li>
     }
     </ul>
     <p><a href="/servers/add" class="btn btn-link">Add</a></p>
@@ -20,6 +24,15 @@
 
 
 
-    @code {
-        private List<Server> servers = ServerRepository.GetServersByCity("Toronto");
+@code {
+    private List<Server> servers = ServerRepository.GetServersByCity("Toronto");
+
+    private void DeleteServer(int id)
+    {
+        if(id > 0)
+        {
+            ServerRepository.DeleteServer(id);
+            navigationManager.Refresh();
+        }
+    }
 }
