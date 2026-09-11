@@ -1,48 +1,37 @@
 ﻿<h3>ComponentServer</h3>
 
-<p style="@($"color:{(server.IsOnline ? "green" : "red")}")">
-    Server-side Blazor component that provides a server-side rendering environment for Blazor components.
-    @serverInfo published at @DateTime.Now
-    @server.Name -> @server.City
-   <br/>
-    Server is @(server.IsOnline  ? "online" : "offline")
-</p>
+
 
 
 @if(server !=null)
 {
-    <EditForm Enhance="true" Model="server" OnValidSubmit="GetData" FormName="myForm">
-        <InputNumber @bind-Value="server.Id" hidden></InputNumber>
-        <InputText @bind-Value="server.Name" hidden></InputText>
-        <InputText @bind-Value="server.City" hidden></InputText>
-        <InputCheckbox @bind-Value="server.IsOnline" hidden></InputCheckbox>
-        <button type="submit" class="btn btn-primary">Turn On/Off</button>
-    </EditForm>
+    <div style="@($"color:{(server.IsOnline ? "green" : "red")}")">
+        Server-side Blazor component that provides a server-side rendering environment for Blazor components.
+        @serverInfo published at @DateTime.Now
+        @server.Name -> @server.City
+        <br />
+        Server is @(server.IsOnline ? "online" : "offline")
+    </div>
+
+        <button type="button" class="btn btn-primary" @onclick="ChangeMe">Turn On/Off</button>
+
 }
 
 
 
 
 @code {
-    private string serverInfo = "Server-side Blazor component is running.";
+    private string serverInfo = "The information";
 
-    [SupplyParameterFromForm]
-    public Server? server { get; set; }
 
-    protected override void OnParametersSet()
+    public Server? server { get; set; } = new Server() { Name = "Server Alpha", City = "Toronto" };
+
+    private void ChangeMe()
     {
-        server ??= new Server()
-            {
-                Name = "Server1",
-                City = "Toronto"
-            };
-    }
-
-    private void GetData()
-    {
-        if(server!=null)
+        if(server != null)
         {
-            server.IsOnline = !server.IsOnline;
+            this.server.IsOnline = !this.server.IsOnline;
         }
     }
+
 }
