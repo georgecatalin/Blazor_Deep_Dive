@@ -1,37 +1,104 @@
-﻿<h3>ComponentServer</h3>
+﻿@inject NavigationManager navigationManager
+
+<h3>This is a non-routable component</h3>
 
 
-
-
-@if(server !=null)
+@if(Server != null)
 {
-    <div style="@($"color:{(server.IsOnline ? "green" : "red")}")">
-        Server-side Blazor component that provides a server-side rendering environment for Blazor components.
-        @serverInfo published at @DateTime.Now
-        @server.Name -> @server.City
-        <br />
-        Server is @(server.IsOnline ? "online" : "offline")
-    </div>
-
-        <button type="button" class="btn btn-primary" @onclick="ChangeMe">Turn On/Off</button>
-
+    <tr style="background-color:@GetBackgroundColor()">
+        <td>@Server.Name</td>
+        <td>@Server.City</td>
+        <td style="color:@((Server.IsOnline ? "green" : "red"))">
+            @(Server.IsOnline ? "online" : "offline")
+        </td>
+        <td>
+            @if(Server.IsOnline)
+            {
+                Random random = new Random();
+                int randomNumber = random.Next(0, 500);
+                <text>@randomNumber</text>
+            }
+            else
+            {
+                <text>Not Available</text>
+            }
+        </td>
+        <td>
+            @if(Server.IsOnline)
+            {
+                <button type="button" class="btn btn-outline-danger" onclick="@(()=>{SetServerStatus(false);})">Turn Off</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-outline-success" onclick="@(() => {SetServerStatus(true);})">Turn on</button>
+            }
+      
+        &nbsp;
+        <a href="/server/@Server.Id" class="btn btn-outline-primary">Edit Server</a>
+        </td>
+        <td>
+            <EditForm Model="Server" FormName="@($"form-Name-{Server.Id}")" style="@($"background-color:{GetBackgroundColor()}")" OnValidSubmit="@(() => { DeleteServer(Server.Id);})">
+                <button type="submit" class="btn btn-primary">Delete</button>
+            </EditForm>
+        </td>
+    </tr>
 }
 
+@code
+{
+    [Parameter]
+    public Server? Server { get; set; }
+    
+    [Parameter]
+    public string? SelectedCity { get; set; }
 
-
-
-@code {
-    private string serverInfo = "The information";
-
-
-    public Server? server { get; set; } = new Server() { Name = "Server Alpha", City = "Toronto" };
-
-    private void ChangeMe()
+    private string GetBackgroundColor()
     {
-        if(server != null)
+        if(SelectedCity!=null)
         {
-            this.server.IsOnline = !this.server.IsOnline;
+            switch(SelectedCity)
+            {
+                case "Toronto":
+                    return "powderblue";
+                    break;//unreacheable , but added for the sake of C standardization
+                case "Montreal":
+                    return "lightgray";
+                    break;
+                case "Ottawa":
+                    return "palegreen";
+                    break;
+                case "Calgary":
+                    return "pink";
+                    break;
+                case "Halifax" :
+                    return "white";
+                    break;
+                default:
+                    return "white";
+            }
+        }
+        else
+        {
+            return "white";
         }
     }
 
+    private void SetServerStatus(bool status)
+    {
+        if(Server is not null)
+        {
+            Server.IsOnline = status;
+            ServerRepository.UpdateServer(Server.Id, this.Server);
+        }
+    }
+
+
+    private void DeleteServer(int id)
+    {
+        if(id > 0)
+        {
+            ServerRepository.DeleteServer(id);
+            navigationManager.NavigateTo("/servers", true);
+        }
+    }
 }

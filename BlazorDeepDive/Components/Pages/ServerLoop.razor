@@ -1,27 +1,19 @@
 ﻿@page "/servers/loop"
 @inject NavigationManager navigationManager
+@rendermode InteractiveServer
 
 <h3>ServerLoop</h3>
 <p>
     <ul>
-          @foreach (var server in servers)
-    {
-        <li>
-            @server.Name from @server.City is 
-            <span style="color:@(server.IsOnline ? "green" : "red")">
-             @(server.IsOnline ? "online" : "offline")
-            </span>
-            &nbsp;
-            <a href="/servers/edit/@server.Id" class="btn btn-link">Edit</a>
-            <EditForm Model="server" FormName=@($"form-delete-{server.Id}") OnValidSubmit="() => DeleteServer(server.Id)">
-                <button type="submit" class="btn btn-warning">Delete</button>
-            </EditForm>
-            </li>
-    }
+        @foreach (var server in servers)
+        {
+             <ComponentServer Server="server" SelectedCity="@selectedCity" @rendermode="InteractiveServer" />
+            <button type="button" class="btn btn-primary mb-3" @onclick="() => SelectCity(server)">Select the City</button> 
+        }
     </ul>
-    
-        <ComponentServer @rendermode="InteractiveServer"></ComponentServer>
-    
+    @selectedCity
+
+
     <p><a href="/servers/add" class="btn btn-link">Add</a></p>
 </p>
 
@@ -30,12 +22,23 @@
 @code {
     private List<Server> servers = ServerRepository.GetServersByCity("Toronto");
 
+    private string selectedCity = "Toronto";
+
     private void DeleteServer(int id)
     {
-        if(id > 0)
+        if (id > 0)
         {
             ServerRepository.DeleteServer(id);
             navigationManager.Refresh();
         }
     }
+
+    private void SelectCity(Server server)
+    {
+        if (!string.IsNullOrWhiteSpace(server.City))
+        {
+            this.selectedCity = server.City;
+        }
+    }
+
 }
