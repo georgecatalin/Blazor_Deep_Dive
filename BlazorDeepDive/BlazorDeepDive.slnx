@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="BlazorDeepDive.csproj" />
+  <Project Path="../BlazorApp_global_interactiveserver/BlazorApp_global_interactiveserver.csproj" Id="432881d4-0447-4495-b3c7-49fc79e6dc43" />
+  <Project Path="../BlazorApp_Global_InteractiveServerRouting_Exclue/BlazorApp_Global_InteractiveServerRouting_Exclue.csproj" Id="4a1794dc-75fd-422c-b87f-fd86e144f847" />
+  <Project Path="../BlazorApp_Page_Component_InteractiveServer/BlazorApp_Page_Component_InteractiveServer.csproj" Id="0dc12e07-84b5-45be-ab75-217ca123f569" />
 </Solution>
