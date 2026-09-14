@@ -10,10 +10,10 @@
         @foreach (var city in cities)
         {
             <div class="col">
-                <div class="card">
+                <div class="card @(selectedCity.Equals(city,StringComparison.OrdinalIgnoreCase) ? "border-primary" : "") ">
                     <img class="card-img-top" src="@($"/images/{city}.png")" />
                     <div class="card-body">
-                        <button type="button" class="btn btn-primary" @onclick="@(() => {SelectCity(city);})">Select this city</button>
+                        <button type="button" class="btn btn-primary" @onclick="@(() => {SelectCity(city);})">Select</button>
                     </div>
                 </div>
             </div>
