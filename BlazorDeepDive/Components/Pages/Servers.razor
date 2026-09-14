@@ -29,8 +29,8 @@
 <br/>
 
 <ul>
-    @foreach (var server in servers)
-    {
+    <Virtualize Items="this.servers" Context="server">
+    
         <li @key="@server.Id">
             @server.Name is located in @server.City with the status
             <span style="@($"color:{(  server.IsOnline? "green" : "red")}")">
@@ -43,7 +43,8 @@
                 <button type="submit" class="btn btn-primary">Delete</button>
             </EditForm>
         </li>
-    }
+    </Virtualize>
+    
 </ul>
 <p>
     <a href="/servers/add" class="btn btn-primary">Add Server</a>
@@ -82,6 +83,18 @@
     {
         this.selectedCity = city;
         this.servers = ServerRepository.GetServersByCity(selectedCity);
+
+
+        //using this to create artificially a large number of objects to show
+        /*
+        if(city == "Halifax")
+        {
+            for(int i=16;i<2500;i++)
+            {
+                servers.Add(new Server() { Id = i, Name = $"server-{i}", City = "Halifax" });
+            }
+        }
+        */
     }
 
 
