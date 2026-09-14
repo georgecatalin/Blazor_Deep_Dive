@@ -31,7 +31,7 @@
 <ul>
     @foreach (var server in servers)
     {
-        <li>
+        <li @key="@server.Id">
             @server.Name is located in @server.City with the status
             <span style="@($"color:{(  server.IsOnline? "green" : "red")}")">
                 @(server.IsOnline ? "Online" : "Offline")
@@ -48,7 +48,10 @@
 <p>
     <a href="/servers/add" class="btn btn-primary">Add Server</a>
 </p>
-
+<p>
+    <button type="button" class="btn btn-secondary" @onclick="@(() =>
+{this.servers.Insert(0,new Server() {Name="new server",City="Galati"});})">Add secondary server</button>
+</p>
 
 @code {
     private List<Server> servers = ServerRepository.GetServersByCity("Toronto");
