@@ -11,7 +11,7 @@
             &nbsp;
             <a href="/servers/edit/@server.Id" class="btn btn-link">Edit</a>
             &nbsp;
-            <EditForm Model="server" FormName="@($"form-server-{server.Id}")" OnValidSubmit="@(() =>  DeleteServer(server.Id))">
+            <EditForm Model="server" FormName="@($"form-server-{server.Id}")" OnValidSubmit="@(() => DeleteServer(server.Id))">
                 <button type="submit" class="btn btn-primary">Delete</button>
             </EditForm>
         </li>
@@ -20,14 +20,23 @@
 </ul>
 
 @code {
-    private List<Server> servers = ServerRepository.GetServersByCity("Toronto");
+
+    [Parameter]
+    public string? CityName { get; set; }
+
+    private List<Server>? servers;
+
+    protected override void OnParametersSet()
+    {
+        servers =  ServerRepository.GetServersByCity(CityName??"Toronto");
+    }
 
     private void DeleteServer(int id)
     {
         if (id > 0)
         {
             ServerRepository.DeleteServer(id);
-            navigationManager.NavigateTo("/servers",true);
+            navigationManager.NavigateTo("/servers", true);
         }
     }
 
