@@ -7,15 +7,15 @@
     <ul>
         @foreach (var server in servers)
         {
-             <ComponentServer Server="server" SelectedCity="@selectedCity" @rendermode="InteractiveServer" />
+             <ServerComponent Server="server" SelectedCity="@selectedCity" @rendermode="InteractiveServer" />
             <button type="button" class="btn btn-primary mb-3" @onclick="() => SelectCity(server)">Select the City</button> 
         }
     </ul>
     @selectedCity
-
+</p>
 
     <p><a href="/servers/add" class="btn btn-link">Add</a></p>
-</p>
+
 
 
 
@@ -24,14 +24,6 @@
 
     private string selectedCity = "Toronto";
 
-    private void DeleteServer(int id)
-    {
-        if (id > 0)
-        {
-            ServerRepository.DeleteServer(id);
-            navigationManager.Refresh();
-        }
-    }
 
     private void SelectCity(Server server)
     {

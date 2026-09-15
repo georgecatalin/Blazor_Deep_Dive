@@ -28,34 +28,21 @@
  </div>
 <br/>
 
-<ul>
-    <Virtualize Items="this.servers" Context="server">
-    
-        <li @key="@server.Id">
-            @server.Name is located in @server.City with the status
-            <span style="@($"color:{(  server.IsOnline? "green" : "red")}")">
-                @(server.IsOnline ? "Online" : "Offline")
-            </span>
-            &nbsp;
-            <a href="/servers/edit/@server.Id" class="btn btn-link">Edit</a>
-            &nbsp;
-            <EditForm Model="server" FormName="@($"form-server-{server.Id}")" OnValidSubmit="@(()=>{ DeleteServer(server.Id);})">
-                <button type="submit" class="btn btn-primary">Delete</button>
-            </EditForm>
-        </li>
-    </Virtualize>
-    
-</ul>
+<ServerListComponent @rendermode="InteractiveServer"></ServerListComponent>
+
+
 <p>
     <a href="/servers/add" class="btn btn-primary">Add Server</a>
 </p>
-<p>
+
+@* <p>
+
     <button type="button" class="btn btn-secondary" @onclick="@(() =>
 {this.servers.Insert(0,new Server() {Name="new server",City="Galati"});})">Add secondary server</button>
-</p>
+</p> *@
 
 @code {
-    private List<Server> servers = ServerRepository.GetServersByCity("Toronto");
+ 
     private List<string> cities = CitiesRepository.GetCities();
     private string selectedCity = "Toronto";
 
@@ -65,24 +52,17 @@
         {
             _serverFilter = value;
             //capture the value and do logic
-            this.servers = ServerRepository.SearchServers(serverFilter);
+            //this.servers = ServerRepository.SearchServers(serverFilter);
             this.selectedCity = string.Empty;
         }
     }
 
-    private void DeleteServer(int id)
-    {
-        if(id > 0)
-        {
-            ServerRepository.DeleteServer(id);
-            navigationManager.Refresh();
-        }
-    }
+  
 
     private void SelectCity(string city)
     {
         this.selectedCity = city;
-        this.servers = ServerRepository.GetServersByCity(selectedCity);
+        //this.servers = ServerRepository.GetServersByCity(selectedCity);
 
 
         //using this to create artificially a large number of objects to show
@@ -100,7 +80,7 @@
 
     private void HandleFilter()
     {
-        this.servers = ServerRepository.SearchServers(serverFilter);
+        //this.servers = ServerRepository.SearchServers(serverFilter);
         this.selectedCity = string.Empty;
     }
 }
